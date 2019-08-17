@@ -5,6 +5,7 @@
 #include <TM1637.h>
 #include "DateTime.h"
 
+#define VERSION "1.0.0"
 #define DEFAULT_PRESSED_DELLAY 2000
 
 #define DS1307_I2C_ADDRESS 0x68
@@ -12,8 +13,7 @@
 #define btnModePin 11
 #define btnPlusPin 10
 #define btnMinusPin 12
-#define powerPin 2
-#define ledPin 13
+#define powerPin 13
 
 #define CLK 9  //pins definitions for TM1637 and can be changed to other ports
 #define DIO 8
@@ -455,10 +455,17 @@ void updateData()
 
 void printDeviceInfo()
 {
-  //Печатаем дату время
+  //Print version
   Serial.println("//=======================================//");
   Serial.println();
-  Serial.print("  Date: ");
+  Serial.print("  version: ");
+  Serial.print(VERSION);
+  Serial.println();
+
+  //Print time
+  Serial.println("//=======================================//");
+  Serial.println();
+  Serial.print("  Time: ");
   prin2dig(hour);
   Serial.print(":");
   prin2dig(minute);
@@ -466,7 +473,7 @@ void printDeviceInfo()
   prin2dig(second);
   Serial.println();
 
-  //Печатаем параметры включения выключения
+  //Print value on/off 
   Serial.println("//=======================================//");
   Serial.println();
   Serial.print("  Light params: ");
@@ -492,7 +499,6 @@ void setup()
 
   Wire.begin();
 
-  pinMode(ledPin, OUTPUT);
   pinMode(powerPin, OUTPUT);
 
   pinMode(btnModePin, INPUT_PULLUP);
@@ -617,11 +623,9 @@ void loop()
 
     //    Serial.println("//=======================================//");
     if (powerOn || (hour >= hOn && minute >= mOn && hour <= hOff && minute < mOff)) {
-      digitalWrite(ledPin, HIGH);
       digitalWrite(powerPin, HIGH);
       //Serial.println("             =====Light On====");
     } else {
-      digitalWrite(ledPin, LOW);
       digitalWrite(powerPin, LOW);
       //Serial.println("             ====Light Off====");
     }
