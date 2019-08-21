@@ -14,8 +14,8 @@
 #define DS1307_I2C_ADDRESS 0x68
 
 #define btnModePin 11
-#define btnPlusPin 10
-#define btnMinusPin 12
+#define btnPlusPin 12
+#define btnMinusPin 10
 #define powerPin 13
 
 #define CLK 9  //pins definitions for TM1637 and can be changed to other ports
