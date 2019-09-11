@@ -5,7 +5,7 @@
 #include <TM1637.h>
 #include "DateTime.h"
 
-#define VERSION "1.0.0"
+#define VERSION "1.0.1"
 
 #define DEFAULT_PRESSED_DELLAY 2000
 #define DEFAULT_CHECK_POWER_STATE_DELAY 10
@@ -468,6 +468,7 @@ void changeModeLongPress()
 
 void updateData()
 {
+  timerDellayForChangeModeShowTime = 0;
   switch (btnPressed) {
   case btnPlus: incrementTime(); break;
   case btnMinus: decrementTime(); break;
@@ -481,7 +482,7 @@ void printDeviceInfo()
   getDateDs1307();
 
   //Print version
-  Serial.println("//=======================================//");
+  Serial.println("//=====      Timer power on/off     =======//");
   Serial.print("  version: ");
   Serial.print(VERSION);
   Serial.println();
@@ -648,7 +649,6 @@ void loop()
   }
 
   if (bouncerPlus.update()) {
-    timerDellayForChangeModeShowTime = 0;
     if (bouncerPlus.read() == 0 ) {
       // Serial.println("pressed Pluss"); //вывод сообщения о нажатии
       pressedMoment = millis();
@@ -662,7 +662,6 @@ void loop()
   }
 
   if (bouncerMinus.update()) {
-    timerDellayForChangeModeShowTime = 0;
     if (bouncerMinus.read() == 0 ) {
       // Serial.println("pressed Minus"); //вывод сообщения о нажатии
       pressedMoment = millis();
@@ -696,6 +695,8 @@ void loop()
       if (timerDellayForChangeModeShowTime >= DEFAULT_DELLAY_FOR_CHANGE_MODE_SHOW_TIME) {
         modeOpertion = mShowTime;
         timerDellayForChangeModeShowTime = 0;
+        saveTimeOn();
+        saveTimeOff();
       }
       timerDellayForChangeModeShowTime += 1;
     }
